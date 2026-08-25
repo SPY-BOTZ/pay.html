@@ -3,54 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting to UPI App...</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #0f172a;
-            color: #ffffff;
-            padding-top: 50px;
-        }
-        .box {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            background: #22c55e;
-            color: white;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div class="box">
-        <h2>Opening UPI Payment App...</h2>
-        <p>Agar aapka app apne aap nahi khula toh niche diye gaye button par click karein:</p>
-        <a id="payButton" class="btn" href="#">Pay Now</a>
-    </div>
-
+    <title>Redirecting to Payment App...</title>
     <script>
-        // URL se amount aur UPI ID automatic uthane ke liye
-        const urlParams = new URLSearchParams(window.location.search);
-        const amount = urlParams.get('amount') || '5';
-        const upiId = urlParams.get('upi') || 'BHARATPE.9Q0Q0K0Z8Q466572@unitype';
-        
-        const upiLink = `upi://pay?pa=${upiId}&am=${amount}&pn=SubscriptionBot&cu=INR`;
-        
-        // Button ka link set karna
-        document.getElementById('payButton').href = upiLink;
-        
-        // Page khulte hi automatic redirect karne ke liye
-        window.location.href = upiLink;
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const amount = urlParams.get('amount') || '5';
+            const upi = urlParams.get('upi') || 'BHARATPE.9Q0Q0K0Z8Q466572@unitype';
+            
+            // Direct UPI intent link
+            const upiLink = `upi://pay?pa=${upi}&am=${amount}.00&pn=SubscriptionBot&cu=INR`;
+            
+            // Redirect user directly to UPI app
+            window.location.href = upiLink;
+            
+            // Fallback text agar app open na ho
+            setTimeout(function() {
+                document.getElementById('fallback').style.display = 'block';
+            }, 2000);
+        };
     </script>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9;">
+    <h2>Redirecting to your Payment App...</h2>
+    <p>Please wait while we securely redirect you to your UPI app.</p>
+    <div id="fallback" style="display:none; margin-top: 30px;">
+        <p>If your app didn't open automatically, click the button below:</p>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const amount = urlParams.get('amount') || '5';
+            const upi = urlParams.get('upi') || 'BHARATPE.9Q0Q0K0Z8Q466572@unitype';
+            document.write(`<a href="upi://pay?pa=${upi}&am=${amount}.00&pn=SubscriptionBot&cu=INR" style="background: #5865F2; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">Open UPI App Manually</a>`);
+        </script>
+    </div>
 </body>
 </html>
